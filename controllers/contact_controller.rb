@@ -1,8 +1,7 @@
 class ContactController < ApplicationController
 
 def index
-  render
-  thread_joiner
+  render_multi_threaded
 end
 
 

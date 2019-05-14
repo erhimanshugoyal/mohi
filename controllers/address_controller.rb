@@ -1,8 +1,8 @@
 class AddressController < ApplicationController
 
 def index
-  render
-  thread_joiner
+   @address = ["This","is","my","address"]
+   render_multi_threaded
 end
 
 

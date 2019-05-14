@@ -2,7 +2,7 @@ require 'webrick'
 require 'thread'
 require 'thwait'
 
-
+load 'lib/action_controller/base.rb'
 load 'controllers/application_controller.rb'
 Dir["controllers/*.rb"].sort.each {|file|  load file }
 

@@ -1,11 +1,10 @@
 require 'benchmark'
 class ApplicationController
+  
   attr_accessor :params
   def initialize(request=nil)
   	@request = request
   	@threads  = []
-  	@hash_of_templates = {}
-  	@hell = ["asd","sadasd"]
   end
 
   def self.inherited(other)
@@ -27,32 +26,15 @@ class ApplicationController
 	else
 		file = File.read("views/"+params[:controller]+"/_"+ file_name +".html.erb")
 	end
-	template = ERB.new(file,0,"")
-	puts template.inspect
-	#threads  = get_binding(:@threads)	
-	#puts threads.class
-	
-
+	template = ERB.new(file,0,"") 
 	result = template.result(binding)
-	
-	@hash_of_templates[file_name] = result 
-	puts @hash_of_templates
+	puts result
 	result# = template.result(binding)
 	
 	}
 
 	result
-	#}
-	# file.each do |line|
-	# 	eval(line)
-	# end 
-	# ruby_codes = file.scan(/<%([^<>]*)%>/imu).flatten
-	# puts ruby_codes
-	# puts file
-	# ruby_codes.each_with_index{|code,index|
-	# 	file.gsub!(code,"*****#{index}*****")
-	# }
-	# return file.to_s
+	
   end
 
  
@@ -73,14 +55,34 @@ end
 def thread_joiner
   ThreadsWait.all_waits(*@threads)
   file  = ""
+   puts @threads.inspect
+  # order = @threads.map{|th| th.value}
+  # puts order.inspect
   file = @threads.map(&:join).map(&:value).join
-  puts file
   file
   template = ERB.new(file.encode('UTF-8'))#,0,"")
   result = template.result(binding)
-  puts	result.class
-  result
+  puts result
 
 end
+
+def render_multi_threaded
+  render
+  thread_joiner
+end
+
+   def self.after(*names)
+    names.each do |name|
+      m = instance_method(name)
+      define_method(name) do |*args, &block|  
+        m.bind(self).(*args, &block)
+        puts binding.inspect
+        yield
+      end
+    end
+  end
+
+  after(:render_multi_threaded) { p "asd"}
+
 
 end
