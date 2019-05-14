@@ -5,6 +5,8 @@ def index
    render_multi_threaded
 end
 
-
+def new
+  render_multi_threaded
+end
 
 end

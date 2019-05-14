@@ -5,7 +5,8 @@
 	"/users" => "user#index",
 	"/my_users" => "user#show",
 	"/contact" => "contact#index",
-	"/address" => "address#index"
+	"/address" => "address#index",
+	"/address/new" =>  "address#new"
 
 }
 

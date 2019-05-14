@@ -53,6 +53,7 @@ def set_thread_variable(var, value)
 end
 
 def thread_joiner
+  if !@threads.nil?
   ThreadsWait.all_waits(*@threads)
   file  = ""
    puts @threads.inspect
@@ -62,8 +63,8 @@ def thread_joiner
   file
   template = ERB.new(file.encode('UTF-8'))#,0,"")
   result = template.result(binding)
-  puts result
-
+  p result
+  end
 end
 
 def render_multi_threaded
@@ -82,7 +83,22 @@ end
     end
   end
 
-  after(:render_multi_threaded) { p "asd"}
+ #  after(:render_multi_threaded) { 
+	# if !@threads.nil?
+	# 	ThreadsWait.all_waits(*@threads)
+	# 	file  = ""
+	# 	puts @threads.inspect
+	# 	# order = @threads.map{|th| th.value}
+	# 	# puts order.inspect
+	# 	file = @threads.map(&:join).map(&:value).join
+	# 	file
+	# 	template = ERB.new(file.encode('UTF-8'))#,0,"")
+	# 	result = template.result(binding)
+	# 	p result
+	# else
+	# 	p "No thread found"
+	# end
+ #  }
 
 
 end
